@@ -16,13 +16,20 @@ BLOCK_SIZE = 512
 tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
 model = AutoModelForCausalLM.from_pretrained(MODEL_NAME)
 
+# Use a DISTINCT pad token instead of reusing eos_token
 if tokenizer.pad_token is None:
-    tokenizer.pad_token = tokenizer.eos_token
+    if tokenizer.unk_token is not None:
+        tokenizer.pad_token = tokenizer.unk_token
+    else:
+        tokenizer.add_special_tokens({"pad_token": "[PAD]"})
+        model.resize_token_embeddings(len(tokenizer))
+
+model.config.pad_token_id = tokenizer.pad_token_id
 
 dataset = load_dataset("text", data_files={"train": TEXT_FILE})
 
 def tokenize_fn(examples):
-    texts_with_eos = [t + tokenizer.eos_token for t in examples["text"]]
+    texts_with_eos = [t + tokenizer.eos_token for t in examples["text"] if t.strip()]
     return tokenizer(texts_with_eos)
 
 tokenized = dataset.map(tokenize_fn, batched=True, remove_columns=["text"])
@@ -64,7 +71,10 @@ training_args = TrainingArguments(
     logging_steps=10,
     learning_rate=3e-5,
     warmup_steps=50,
+    max_grad_norm=1.0,
     fp16=torch.cuda.is_available(),
+    load_best_model_at_end=True,
+    metric_for_best_model="eval_loss",
     report_to="none",
 )
 
