@@ -51,7 +51,6 @@ data_collator = DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=False)
 
 training_args = TrainingArguments(
     output_dir=OUTPUT_DIR,
-    overwrite_output_dir=True,
     num_train_epochs=3,
     per_device_train_batch_size=8,
     per_device_eval_batch_size=8,
@@ -81,4 +80,5 @@ if __name__ == "__main__":
     trainer.save_model(OUTPUT_DIR)
     tokenizer.save_pretrained(OUTPUT_DIR)
     print(f"Training complete. Model saved to {OUTPUT_DIR}")
+g
     
