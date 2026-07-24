@@ -80,5 +80,3 @@ if __name__ == "__main__":
     trainer.save_model(OUTPUT_DIR)
     tokenizer.save_pretrained(OUTPUT_DIR)
     print(f"Training complete. Model saved to {OUTPUT_DIR}")
-g
-    
