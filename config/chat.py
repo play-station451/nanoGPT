@@ -22,7 +22,8 @@ if tokenizer.pad_token is None:
 dataset = load_dataset("text", data_files={"train": TEXT_FILE})
 
 def tokenize_fn(examples):
-    return tokenizer(examples["text"])
+    texts_with_eos = [t + tokenizer.eos_token for t in examples["text"]]
+    return tokenizer(texts_with_eos)
 
 tokenized = dataset.map(tokenize_fn, batched=True, remove_columns=["text"])
 
