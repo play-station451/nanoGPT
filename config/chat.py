@@ -9,7 +9,7 @@ from transformers import (
 from datasets import load_dataset
 
 MODEL_NAME = "SupraLabs/Supra-1.5-50M-Base-exp"
-TEXT_FILE = "nanoGPT/data/chat/input.txt"
+TEXT_FILE = "https://raw.githubusercontent.com/play-station451/Hdjdjdj/refs/heads/main/input.txt"
 OUTPUT_DIR = "out-supra-chat"
 BLOCK_SIZE = 512
 
@@ -81,3 +81,4 @@ if __name__ == "__main__":
     trainer.save_model(OUTPUT_DIR)
     tokenizer.save_pretrained(OUTPUT_DIR)
     print(f"Training complete. Model saved to {OUTPUT_DIR}")
+    
