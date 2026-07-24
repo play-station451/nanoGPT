@@ -9,8 +9,8 @@ from transformers import (
 from datasets import load_dataset
 
 MODEL_NAME = "SupraLabs/Supra-1.5-50M-Base-exp"
-TEXT_FILE = "data/chat/input.txt"
-OUTPUT_DIR = "out-discord"
+TEXT_FILE = "nanoGPT/data/chat/input.txt"
+OUTPUT_DIR = "out-supra-chat"
 BLOCK_SIZE = 512
 
 tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
@@ -37,7 +37,11 @@ def group_texts(examples):
     result["labels"] = result["input_ids"].copy()
     return result
 
-lm_dataset = tokenized.map(group_texts, batched=True)
+lm_dataset = tokenized.map(
+    group_texts,
+    batched=True,
+    remove_columns=tokenized["train"].column_names,
+)
 
 split = lm_dataset["train"].train_test_split(test_size=0.1, seed=42)
 train_dataset = split["train"]
