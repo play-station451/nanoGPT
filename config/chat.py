@@ -13,10 +13,12 @@ TEXT_FILE = "https://raw.githubusercontent.com/play-station451/Hdjdjdj/refs/head
 OUTPUT_DIR = "out-supra-chat"
 BLOCK_SIZE = 512
 
+use_bf16 = torch.cuda.is_available() and torch.cuda.is_bf16_supported()
+use_fp16 = torch.cuda.is_available() and not use_bf16
+
 tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
 model = AutoModelForCausalLM.from_pretrained(MODEL_NAME)
 
-# Use a DISTINCT pad token instead of reusing eos_token
 if tokenizer.pad_token is None:
     if tokenizer.unk_token is not None:
         tokenizer.pad_token = tokenizer.unk_token
@@ -72,7 +74,8 @@ training_args = TrainingArguments(
     learning_rate=3e-5,
     warmup_steps=50,
     max_grad_norm=1.0,
-    fp16=torch.cuda.is_available(),
+    fp16=use_fp16,
+    bf16=use_bf16,
     load_best_model_at_end=True,
     metric_for_best_model="eval_loss",
     report_to="none",
