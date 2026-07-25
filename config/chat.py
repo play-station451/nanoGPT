@@ -9,7 +9,11 @@ from transformers import (
 from datasets import load_dataset
 
 MODEL_NAME = "SupraLabs/Supra-1.5-50M-Base-exp"
-TEXT_FILE = "https://raw.githubusercontent.com/play-station451/Hdjdjdj/refs/heads/main/input.txt"
+TEXT_FILES = [
+    "https://raw.githubusercontent.com/play-station451/Hdjdjdj/refs/heads/main/input.txt",
+    "https://raw.githubusercontent.com/play-station451/Hdjdjdj/refs/heads/main/input2.txt",
+    "https://raw.githubusercontent.com/play-station451/Hdjdjdj/refs/heads/main/input3.txt"
+]
 OUTPUT_DIR = "out-supra-chat"
 BLOCK_SIZE = 512
 
@@ -28,7 +32,7 @@ if tokenizer.pad_token is None:
 
 model.config.pad_token_id = tokenizer.pad_token_id
 
-dataset = load_dataset("text", data_files={"train": TEXT_FILE})
+dataset = load_dataset("text", data_files={"train": TEXT_FILES})
 
 def tokenize_fn(examples):
     texts_with_eos = [t + tokenizer.eos_token for t in examples["text"] if t.strip()]
