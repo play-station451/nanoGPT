@@ -8,7 +8,7 @@ from transformers import (
 )
 from datasets import load_dataset
 
-MODEL_NAME = "AtomixLabs/Photon-2.0-1M"
+MODEL_NAME = "MaliosDark/Nexus-Erebus-50M"
 TEXT_FILES = [
     "https://raw.githubusercontent.com/play-station451/Hdjdjdj/refs/heads/main/input.txt",
     "https://raw.githubusercontent.com/play-station451/Hdjdjdj/refs/heads/main/input2.txt",
