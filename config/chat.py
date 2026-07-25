@@ -8,7 +8,7 @@ from transformers import (
 )
 from datasets import load_dataset
 
-MODEL_NAME = "MaliosDark/Nexus-Erebus-50M"
+MODEL_NAME = "SupraLabs/MicroSupra-1k"
 TEXT_FILES = [
     "https://raw.githubusercontent.com/play-station451/Hdjdjdj/refs/heads/main/input.txt",
     "https://raw.githubusercontent.com/play-station451/Hdjdjdj/refs/heads/main/input2.txt",
