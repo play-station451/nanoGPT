@@ -8,7 +8,7 @@ from transformers import (
 )
 from datasets import load_dataset
 
-MODEL_NAME = "SupraLabs/Supra-1.5-50M-Base-exp"
+MODEL_NAME = "Qwen/Qwen2.5-1.5B-Instruct"
 TEXT_FILE = "https://raw.githubusercontent.com/play-station451/Hdjdjdj/refs/heads/main/input.txt"
 OUTPUT_DIR = "out-supra-chat"
 BLOCK_SIZE = 512
