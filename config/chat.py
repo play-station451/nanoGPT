@@ -11,7 +11,7 @@ from datasets import load_dataset
 MODEL_NAME = "play451/R3tard"
 HF_DATASET_NAME = "thefrankhsu/hate_speech_twitter"
 HF_DATASET_SPLIT = "train"
-HF_DATASET_TEXT_COLUMN = "text_content"
+HF_DATASET_TEXT_COLUMN = "tweet"
 OUTPUT_DIR = "out-supra-chat"
 BLOCK_SIZE = 512
 
