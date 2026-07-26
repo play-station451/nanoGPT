@@ -16,7 +16,7 @@ TEXT_FILES = [
 ]
 HF_DATASET_NAME = "sakren/twitter_racism_dataset"
 HF_DATASET_SPLIT = "train"
-HF_DATASET_TEXT_COLUMN = "text"
+HF_DATASET_TEXT_COLUMN = "Text"
 OUTPUT_DIR = "out-supra-chat"
 BLOCK_SIZE = 512
 
