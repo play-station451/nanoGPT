@@ -9,9 +9,9 @@ from transformers import (
 from datasets import load_dataset
 
 MODEL_NAME = "play451/R3tard"
-HF_DATASET_NAME = "AfkaraLP/racist-and-sex-jokes-enhanced"
+HF_DATASET_NAME = "MartynaKopyta/hate_offensive_tweets"
 HF_DATASET_SPLIT = "train"
-HF_DATASET_TEXT_COLUMN = "response"
+HF_DATASET_TEXT_COLUMN = "text_cleaned"
 OUTPUT_DIR = "out-supra-chat"
 BLOCK_SIZE = 512
 
