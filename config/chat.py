@@ -6,7 +6,7 @@ from transformers import (
     Trainer,
     DataCollatorForLanguageModeling,
 )
-from datasets import load_dataset
+from datasets import load_dataset, concatenate_datasets
 
 MODEL_NAME = "SupraLabs/Supra-1.5-50M-Base-exp"
 TEXT_FILES = [
@@ -14,6 +14,9 @@ TEXT_FILES = [
     "https://raw.githubusercontent.com/play-station451/Hdjdjdj/refs/heads/main/input2.txt",
     "https://raw.githubusercontent.com/play-station451/Hdjdjdj/refs/heads/main/input3.txt"
 ]
+HF_DATASET_NAME = "sakren/twitter_racism_dataset"
+HF_DATASET_SPLIT = "train"
+HF_DATASET_TEXT_COLUMN = "text"
 OUTPUT_DIR = "out-supra-chat"
 BLOCK_SIZE = 512
 
@@ -32,10 +35,18 @@ if tokenizer.pad_token is None:
 
 model.config.pad_token_id = tokenizer.pad_token_id
 
-dataset = load_dataset("text", data_files={"train": TEXT_FILES})
+local_dataset = load_dataset("text", data_files={"train": TEXT_FILES})["train"]
+
+hf_dataset = load_dataset(HF_DATASET_NAME, split=HF_DATASET_SPLIT)
+if HF_DATASET_TEXT_COLUMN != "text":
+    hf_dataset = hf_dataset.rename_column(HF_DATASET_TEXT_COLUMN, "text")
+hf_dataset = hf_dataset.select_columns(["text"])
+
+combined_dataset = concatenate_datasets([local_dataset, hf_dataset])
+dataset = combined_dataset.shuffle(seed=42)
 
 def tokenize_fn(examples):
-    texts_with_eos = [t + tokenizer.eos_token for t in examples["text"] if t.strip()]
+    texts_with_eos = [t + tokenizer.eos_token for t in examples["text"] if t and t.strip()]
     return tokenizer(texts_with_eos)
 
 tokenized = dataset.map(tokenize_fn, batched=True, remove_columns=["text"])
@@ -54,10 +65,10 @@ def group_texts(examples):
 lm_dataset = tokenized.map(
     group_texts,
     batched=True,
-    remove_columns=tokenized["train"].column_names,
+    remove_columns=tokenized.column_names,
 )
 
-split = lm_dataset["train"].train_test_split(test_size=0.1, seed=42)
+split = lm_dataset.train_test_split(test_size=0.1, seed=42)
 train_dataset = split["train"]
 val_dataset = split["test"]
 
